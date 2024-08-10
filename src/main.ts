@@ -1,16 +1,18 @@
-import { Board } from "./Board";
-import { clear } from "./utils/canvas";
+import { board } from "./Board";
+import { setupUi } from "./ui/tabContent";
+import { clear, getCanvas, getContext, resize } from "./utils/canvas";
 
 const TPS = 60;
-const board = new Board();
 let lastUpdate = Date.now();
+const canvas = getCanvas();
+const ctx = getContext();
 
-const draw = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
+const draw = () => {
   clear(ctx);
 
-  board.draw(ctx);
+  board.draw();
 
-  requestAnimationFrame(() => draw(canvas, ctx));
+  requestAnimationFrame(() => draw());
 };
 
 const update = () => {
@@ -22,26 +24,20 @@ const update = () => {
   lastUpdate = now;
 };
 
-const resize = (canvas: HTMLCanvasElement) => {
-  const { innerWidth, innerHeight } = window;
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-};
-
 const setup = () => {
-  const canvas = document.getElementById("game") as HTMLCanvasElement | null;
-  if (!canvas) throw new Error("Canvas not found");
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("2D context not found");
-
   resize(canvas);
 
-  board.setup(canvas);
+  board.setup();
 
   setInterval(update, 1000 / TPS);
-  requestAnimationFrame(() => draw(canvas, ctx));
+  requestAnimationFrame(() => draw());
 
   window.addEventListener("resize", () => resize(canvas));
+  canvas.addEventListener("click", (event) => {
+    board.handleClick(event);
+  });
+
+  setupUi();
 };
 
 setup();

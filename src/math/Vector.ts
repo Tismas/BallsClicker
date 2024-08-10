@@ -31,4 +31,8 @@ export class Vector {
 
     return new Vector(x, y);
   }
+
+  distanceTo(v: Vector) {
+    return this.subtract(v).length;
+  }
 }

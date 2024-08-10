@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Balls Clicker</title>
     <style>
+      * {
+        box-sizing: border-box;
+        user-select: none;
+      }
       body {
         margin: 0;
         padding: 0;
@@ -13,11 +17,78 @@
       canvas {
         display: block;
       }
+      .app-container {
+        display: flex;
+      }
+      .sider {
+        min-width: 300px;
+        background: #222;
+        border-right: 4px solid #1f1f1f;
+        color: #eee;
+        position: relative;
+      }
+      .money {
+        padding: 16px;
+        padding-bottom: 8px;
+        display: flex;
+        justify-content: center;
+      }
+      .tabs {
+        position: relative;
+        display: flex;
+        justify-content: space-around;
+        border-top: 1px solid #333;
+      }
+      .tab {
+        padding: 8px 16px;
+        cursor: pointer;
+      }
+      .tab:hover {
+        background: #333;
+      }
+      .tab-content {
+        padding: 16px;
+        border-top: 1px solid #333;
+      }
+      .upgrade-button {
+        padding: 8px;
+        background: #333;
+        color: #eee;
+        border: 1px solid #000;
+        cursor: pointer;
+      }
+      .upgrade-button:hover {
+        background: #444;
+      }
+      .footer {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        color: #666;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
-    <div id="app">
+    <div id="app" class="app-container">
       <canvas id="game"></canvas>
+      <aside class="sider">
+        <div class="money">$<span id="money"></span></div>
+        <div class="tabs">
+          <div class="tab" onclick="renderTargetUpgrades()">
+            Target upgrades
+          </div>
+          <div class="tab" onclick="renderBallsUpgrades()">Balls upgrades</div>
+        </div>
+        <div class="tab-content" id="tab-content"></div>
+        <div class="footer">
+          <div>Made with ❤️ by Naszos</div>
+          <div class="version">v0.0.1</div>
+        </div>
+      </aside>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
