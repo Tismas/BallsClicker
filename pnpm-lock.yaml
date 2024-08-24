@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@naszos/game-utils':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.1.1
+        version: 0.1.1
       pinia:
         specifier: ^2.2.2
         version: 2.2.2(typescript@5.5.4)(vue@3.4.38(typescript@5.5.4))
@@ -302,8 +302,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@naszos/game-utils@0.1.0':
-    resolution: {integrity: sha512-Bw2LK+rOO2djLwN0g8fZh9jQXsRg0jdwoyzG3PF7/BYRkfL80FhbJQOw/wcAVzfRRujOGgTF+Th/px0U5XjXeQ==}
+  '@naszos/game-utils@0.1.1':
+    resolution: {integrity: sha512-jP0kQREm52L4vkwFx/deyd8AyPxEqzZHG74p/1wy+SarnFbH1D43htYvIS/3fyKL5976hRasBKoMo6Bqle3VbQ==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1370,7 +1370,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@naszos/game-utils@0.1.0': {}
+  '@naszos/game-utils@0.1.1': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
