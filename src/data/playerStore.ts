@@ -4,27 +4,46 @@ import { ClickTarget } from "../game/entities/ClickTarget";
 import { BasicBall } from "../game/entities/balls/BasicBall";
 import { useGameStore } from "./gameStore";
 
+interface Upgrade {
+  name: string;
+  cost: number;
+  level: number;
+  onBuy: () => void;
+}
+
+interface PlayerState {
+  money: number;
+  totalMoneyEarned: number;
+
+  basicBall: Upgrade;
+  clickTarget: Upgrade;
+}
+
 export const usePlayerStore = defineStore("player", {
-  state: () => {
-    return { money: 0, basicBallCost: 10, clickTargetCost: 10 };
+  state: (): PlayerState => {
+    return {
+      money: 10,
+      totalMoneyEarned: 10,
+      clickTarget: { name: "Click Target", cost: 10, level: 0, onBuy: () => useGameStore().addEntity(new ClickTarget()) },
+      basicBall: { name: "Basic Ball", cost: 50, level: 0, onBuy: () => useGameStore().addEntity(new BasicBall()) },
+    };
+  },
+  getters: {
+    upgrades: (state) => [state.clickTarget, state.basicBall],
   },
   actions: {
     gainMoney(value: number) {
       this.money += value;
+      this.totalMoneyEarned += value;
     },
-    buyBasicBall() {
-      if (this.money < this.basicBallCost) return;
 
-      this.money -= this.basicBallCost;
-      this.basicBallCost = Math.ceil(this.basicBallCost * 1.1);
-      useGameStore().addEntity(new BasicBall());
-    },
-    buyClickTarget() {
-      if (this.money < this.clickTargetCost) return;
+    buyUpgrade(upgrade: Upgrade) {
+      if (this.money < upgrade.cost) return;
 
-      this.money -= this.clickTargetCost;
-      this.clickTargetCost = Math.ceil(this.clickTargetCost * 1.1);
-      useGameStore().addEntity(new ClickTarget());
+      this.money -= upgrade.cost;
+      upgrade.cost = Math.ceil(upgrade.cost * 1.5);
+      upgrade.level++;
+      upgrade.onBuy();
     },
   },
 });
