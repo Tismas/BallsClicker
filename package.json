@@ -5,11 +5,25 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "@naszos/game-utils": "^0.1.0",
+    "pinia": "^2.2.2",
+    "vue": "3.4.38"
+  },
   "devDependencies": {
-    "typescript": "^5.5.3",
-    "vite": "^5.4.0"
+    "@trivago/prettier-plugin-sort-imports": "4.3.0",
+    "@typescript-eslint/eslint-plugin": "8.1.0",
+    "@typescript-eslint/parser": "8.1.0",
+    "@vitejs/plugin-vue": "5.1.2",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-prettier": "5.2.1",
+    "prettier": "3.3.3",
+    "typescript": "5.5.4",
+    "vite": "5.4.2",
+    "vue-tsc": "2.0.29"
   }
 }

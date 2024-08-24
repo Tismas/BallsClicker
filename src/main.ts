@@ -1,43 +1,13 @@
-import { board } from "./Board";
-import { setupUi } from "./ui/tabContent";
-import { clear, getCanvas, getContext, resize } from "./utils/canvas";
+import { createPinia } from "pinia";
+import { createApp } from "vue";
 
-const TPS = 60;
-let lastUpdate = Date.now();
-const canvas = getCanvas();
-const ctx = getContext();
+import { initGame } from "./game";
+import App from "./ui/App.vue";
 
-const draw = () => {
-  clear(ctx);
+const pinia = createPinia();
+const app = createApp(App);
 
-  board.draw();
+app.use(pinia);
+app.mount("#ui");
 
-  requestAnimationFrame(() => draw());
-};
-
-const update = () => {
-  const now = Date.now();
-  const delta = (now - lastUpdate) / 1000;
-
-  board.update(delta);
-
-  lastUpdate = now;
-};
-
-const setup = () => {
-  resize(canvas);
-
-  board.setup();
-
-  setInterval(update, 1000 / TPS);
-  requestAnimationFrame(() => draw());
-
-  window.addEventListener("resize", () => resize(canvas));
-  canvas.addEventListener("click", (event) => {
-    board.handleClick(event);
-  });
-
-  setupUi();
-};
-
-setup();
+initGame();
