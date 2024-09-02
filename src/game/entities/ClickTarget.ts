@@ -1,4 +1,4 @@
-import { Canvas, CollisionCircle, PhysicsBody, Vector2, interpolate, randomInRange } from "@naszos/game-utils";
+import { Canvas, CollisionCircle, PhysicsBody, Vector2, interpolate } from "@naszos/game-utils";
 
 import { useGameStore } from "../../data/gameStore";
 import { usePlayerStore } from "../../data/playerStore";
@@ -9,11 +9,17 @@ export class ClickTarget extends PhysicsBody {
 
   health: number;
   maxHealth: number;
+  spawningPercentage: number;
+
+  public static onBuy() {
+    const gameStore = useGameStore();
+    gameStore.addEntity(new ClickTarget());
+  }
 
   constructor() {
     const { canvas } = useGameStore();
 
-    const radius = randomInRange(10, 50);
+    const radius = 40;
     super({
       position: Vector2.random([radius, radius], [canvas.screenWidth - radius - 1, canvas.screenHeight - radius - 1]),
       isStatic: true,
@@ -23,15 +29,26 @@ export class ClickTarget extends PhysicsBody {
     this.radius = radius;
     this.health = 10;
     this.maxHealth = 10;
+    this.spawningPercentage = 95;
 
     this.setClickHandler(this.onClick);
     this.setCollisionCallback(this.onCollision);
   }
 
-  draw = (canvas: Canvas) => {
-    canvas.drawCircle(this.position, this.radius, { fill: "#f00" });
+  get isDamageable() {
+    return this.spawningPercentage >= 100;
+  }
 
-    const fontSize = interpolate(10, 26, (this.radius - 10) / 40);
+  get color() {
+    return this.isDamageable ? "#f00" : "#ccc";
+  }
+
+  draw = (canvas: Canvas) => {
+    const sizeModifier = this.spawningPercentage / 100;
+
+    canvas.drawCircle(this.position, this.radius * sizeModifier, { fill: this.color });
+
+    const fontSize = interpolate(10, 26, (this.radius - 10) / 40) * sizeModifier;
     canvas.drawText(this.health.toString(), this.position, {
       font: `${fontSize}px Monospace`,
       textAlign: "center",
@@ -40,12 +57,20 @@ export class ClickTarget extends PhysicsBody {
     });
   };
 
+  update(deltaTime: number, _canvas: Canvas): void {
+    super.update(deltaTime, _canvas);
+
+    if (this.spawningPercentage < 100) this.spawningPercentage += deltaTime * 25;
+    else this.spawningPercentage = 100;
+  }
+
   recreate = () => {
     const { canvas } = useGameStore();
 
+    this.spawningPercentage = 0;
     this.maxHealth += 5;
     this.health = this.maxHealth;
-    this.radius = randomInRange(10, 50);
+    this.radius = 40;
     this.position = Vector2.random(
       [this.radius, this.radius],
       [canvas.screenWidth - this.radius - 1, canvas.screenHeight - this.radius - 1],
@@ -54,6 +79,8 @@ export class ClickTarget extends PhysicsBody {
   };
 
   takeDamage = (damage: number) => {
+    if (!this.isDamageable) return;
+
     const player = usePlayerStore();
     player.gainMoney(damage);
     this.health -= damage;
@@ -70,8 +97,6 @@ export class ClickTarget extends PhysicsBody {
   onCollision = (other: PhysicsBody) => {
     if (other instanceof BasicBall) {
       this.takeDamage(other.damage);
-    } else {
-      this.takeDamage(1);
     }
   };
 }

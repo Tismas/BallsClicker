@@ -6,13 +6,19 @@ export class BasicBall extends PhysicsBody {
   radius: number;
   damage: number;
 
+  public static onBuy() {
+    const gameStore = useGameStore();
+
+    gameStore.addEntity(new BasicBall());
+  }
+
   constructor() {
     const { canvas } = useGameStore();
 
     const radius = 10;
     super({
       position: Vector2.random([radius, radius], [canvas.screenWidth - radius - 1, canvas.screenHeight - radius - 1]),
-      velocity: Vector2.random().normalized().multiply(500),
+      velocity: Vector2.random().normalized().multiply(100),
       keepMomentumOnCollision: true,
     });
 

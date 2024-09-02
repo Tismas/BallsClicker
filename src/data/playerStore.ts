@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 
 import { ClickTarget } from "../game/entities/ClickTarget";
 import { BasicBall } from "../game/entities/balls/BasicBall";
-import { useGameStore } from "./gameStore";
 
 interface Upgrade {
   name: string;
@@ -24,8 +23,8 @@ export const usePlayerStore = defineStore("player", {
     return {
       money: 10,
       totalMoneyEarned: 10,
-      clickTarget: { name: "Click Target", cost: 10, level: 0, onBuy: () => useGameStore().addEntity(new ClickTarget()) },
-      basicBall: { name: "Basic Ball", cost: 50, level: 0, onBuy: () => useGameStore().addEntity(new BasicBall()) },
+      clickTarget: { name: "Click Target", cost: 10, level: 0, onBuy: ClickTarget.onBuy },
+      basicBall: { name: "Basic Ball", cost: 20, level: 0, onBuy: BasicBall.onBuy },
     };
   },
   getters: {
